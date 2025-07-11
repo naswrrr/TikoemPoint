@@ -1,0 +1,82 @@
+<!-- Body: Body -->
+<div class="body d-flex py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <?php if ($this->session->userdata('role') === 'owner'): ?> <!-- 🔐 Cek role: hanya owner -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Form Laporan</h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Form untuk memfilter laporan -->
+                        <form action="<?= base_url('laporan/tampilkan') ?>" method="get">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="tanggal_awal">Tanggal Awal</label>
+                                        <input type="date" class="form-control" id="tanggal_awal" name="tanggal_awal" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="tanggal_akhir">Tanggal Akhir</label>
+                                        <input type="date" class="form-control" id="tanggal_akhir" name="tanggal_akhir" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>&nbsp;</label>
+                                        <button type="submit" class="btn btn-primary btn-block">Tampilkan</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Tampilkan pesan error jika ada -->
+                        <?php if(isset($message)): ?>
+                            <div class="alert alert-info mt-3">
+                                <?= $message ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <!-- Area untuk menampilkan laporan -->
+                        <div class="mt-4" id="tampilan-laporan">
+                            <?php if(isset($laporan) && !empty($laporan)): ?>
+                                <h4>Hasil Laporan</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Tanggal</th>
+                                                <th>Keterangan</th>
+                                                <th>Jumlah</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php $no = 1; ?>
+                                            <?php foreach($laporan as $data): ?>
+                                                <tr>
+                                                    <td><?= $no++ ?></td>
+                                                    <td><?= date('d-m-Y', strtotime($data['tanggal'])) ?></td>
+                                                    <td><?= $data['keterangan'] ?></td>
+                                                    <td>Rp <?= number_format($data['jumlah'], 0, ',', '.') ?></td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <?php else: ?>
+                                <div class="alert alert-warning">
+                                    Silahkan pilih tanggal untuk menampilkan laporan.
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+# TikoemPoint
